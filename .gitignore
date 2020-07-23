@@ -1,0 +1,3 @@
+node_modules
+.secret/inglogin.js
+.secret/mysql.js
