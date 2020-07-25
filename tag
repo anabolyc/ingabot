@@ -1,0 +1,1 @@
+andreymalyshenko/ingabot-quotes:latest

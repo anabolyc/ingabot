@@ -1,6 +1,5 @@
-const sleep = require('sleep')
-
 const log = require("../modules/log")("App.MaklerPage");
+const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
 class MaklerPage {
 
@@ -32,22 +31,22 @@ class MaklerPage {
         log.info("Clicking Rynek")
         const marketLink = await this.marketLink();
         await marketLink.click();
-        sleep.msleep(250);
+        await sleep(1000);
 
         log.info("Clicking Notowania")
         const quotesLink = await this.quotesLink();
         await quotesLink.click();
-        sleep.msleep(750);
+        await sleep(2000);
 
         log.info("Clicking group Dropdown")
         const dropdown = await this.dropdown();
         await dropdown.click();
-        sleep.msleep(250);
+        await sleep(1000);
 
         log.info("Scroll down to ETFs")
         let script = 'let dropdowns = document.getElementsByClassName("text dropdown-option r-msg"); for (d of dropdowns) { if (d.innerText == "ETF") d.scrollIntoView() }';
         this.browser.js(script);
-        sleep.msleep(250);
+        await sleep(1000);
 
         log.info("Click ETFs")
         const etfdropdown = await this.etfdropdown();

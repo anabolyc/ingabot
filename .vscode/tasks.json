@@ -1,0 +1,38 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "docker build",
+            "type": "shell",
+            "command": "docker build --squash -t $(cat tag) .",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "docker run",
+            "type": "shell",
+            "command": "docker run --name ingabot-quotes-instance-dev --rm -ti -v /mnt-auto/nfs/shared/dev/_nodejs/ingabot/.secret:/app/.secret:ro $(cat tag)",
+            "problemMatcher": []
+        },
+        {
+            "label": "docker run bash",
+            "type": "shell",
+            "command": "docker run --rm -ti --entrypoint=/bin/bash $(cat tag)",
+            "problemMatcher": []
+        },
+        {
+            "label": "docker attach",
+            "type": "shell",
+            "command": "docker exec -ti ingabot-quotes-instance-dev /bin/bash",
+            "problemMatcher": []
+        },
+        {
+            "label": "docker push",
+            "type": "shell",
+            "command": "docker push $(cat tag)",
+            "problemMatcher": []
+        }
+    ]
+}
