@@ -1,0 +1,17 @@
+[Unit]
+Description=dockerized ingabot quote monitor
+Requires=docker.service                                                                                                                     
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker rm -f ingabot-quote-monitor-instance
+ExecStartPre=-/usr/bin/docker pull andreymalyshenko/ingabot-quotes
+ExecStart=/usr/bin/docker run --network=host --name ingabot-quote-monitor-instance -v /apps/ingabot/quote-monitor:/app/.secret:ro andreymalyshenko/ingabot-quotes
+ExecStartPost=/bin/sh -c 'while ! docker ps | grep ingabot-quote-monitor-instance ; do sleep 0.2; done'
+ExecStop=/usr/bin/docker rm -f ingabot-quote-monitor-instance
+TimeoutSec=0
+RemainAfterExit=no
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
