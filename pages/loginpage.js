@@ -1,9 +1,7 @@
 const consts = require("../modules/consts")
-const credentials = require("../.secret/inglogin")
+const credentials = require(process.env.APP_ING_CRED_PATH || "../.secret/inglogin")
 
-const ID = {
-    LOGIN_BOX: "login-input"
-};
+const log = require("../modules/log")("App.LoginPage");
 
 class LoginPage {
 
@@ -12,7 +10,8 @@ class LoginPage {
     }
 
     async loginTextBox() {
-        return await this.browser.getById(ID.LOGIN_BOX);
+        const id = "login-input";
+        return await this.browser.getById(id);
     }
 
     async submitButton() {
@@ -30,28 +29,29 @@ class LoginPage {
     }
 
     async login() {
-        // Enter login page
+        log.info(`Entering login page: ${consts.LOGIN_HOME_URL}`);
         await this.browser.get(consts.LOGIN_HOME_URL);
 
-        // Fill in login name
+        log.info(`Filling in login: ${credentials.name}`);
         const loginBox = await this.loginTextBox();
         await loginBox.sendKeys(credentials.name);
         await loginBox.sendKeys("\n");
 
-        // Fill in password
+        log.info(`Filling in password`);
         let passLetter = null;
         for (let i = 0; i < credentials.password.length; i++) {
             try {
+                log.info(`\t char: ${i}`);
                 passLetter = await this.passwordBox(i + 1);
                 await passLetter.sendKeys(credentials.password.substr(i, 1));
             } catch (e) {}
         }
 
-        // Agree on coockies
+        log.info(`Agreeing on cookies`);
         const cookiesButton = await this.cookiesButton();
         await cookiesButton.click();
 
-        // Submit
+        log.info(`Submitting logon`);
         const submitButton = await this.submitButton();
         await submitButton.click();
     }

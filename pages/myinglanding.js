@@ -1,3 +1,5 @@
+const log = require("../modules/log")("App.MyIngLandingPage");
+
 class MyIngLandingPage {
 
     constructor(browser) {
@@ -10,6 +12,7 @@ class MyIngLandingPage {
     }
 
     async goToMakler() {
+        log.info(`Clicking Makler link`);
         const maklerLink = await this.maklerLink();
         await maklerLink.click();
     }

@@ -1,5 +1,7 @@
 const sleep = require('sleep')
 
+const log = require("../modules/log")("App.MaklerPage");
+
 class MaklerPage {
 
     constructor(browser) {
@@ -27,32 +29,27 @@ class MaklerPage {
     }
 
     async goToQuotes() {
-        // Click Rynek
-        console.debug("Click Rynek");
+        log.info("Clicking Rynek")
         const marketLink = await this.marketLink();
         await marketLink.click();
         sleep.msleep(250);
 
-        // Click Notowania
-        console.debug("Click Notowania");
+        log.info("Clicking Notowania")
         const quotesLink = await this.quotesLink();
         await quotesLink.click();
-        sleep.msleep(500);
+        sleep.msleep(750);
 
-        // Click dropdown
-        console.debug("Click Dropdown");
+        log.info("Clicking group Dropdown")
         const dropdown = await this.dropdown();
         await dropdown.click();
         sleep.msleep(250);
 
-        // Scroll down to ETFs
-        console.debug("Scroll down to ETFs");
+        log.info("Scroll down to ETFs")
         let script = 'let dropdowns = document.getElementsByClassName("text dropdown-option r-msg"); for (d of dropdowns) { if (d.innerText == "ETF") d.scrollIntoView() }';
         this.browser.js(script);
         sleep.msleep(250);
 
-        // Click ETFs
-        console.debug("Click ETFs");
+        log.info("Click ETFs")
         const etfdropdown = await this.etfdropdown();
         await etfdropdown.click();
     }
