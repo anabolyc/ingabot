@@ -3,6 +3,7 @@ const { Builder, By, until, Browser, Capability, Capabilities } = require('selen
 const chrome = require('selenium-webdriver/chrome');
 const { Preferences, Level, Type, getLogger, addConsoleHandler }  = require('selenium-webdriver/lib/logging')
 const consts = require("./consts")
+const fs = require('fs');
 
 const log = require("./log")("App.ChromeBrowser");
 
@@ -73,8 +74,9 @@ class ChromeBrowser {
         return await this.driver.findElement(By.id(id));
     };
 
-    async getByXPath(xpath, timeout) {
-        log.debug(`Requesting element by XPath: ${xpath}`);
+    async getByXPath(xpath, timeout, quiet = false) {
+        if (!quiet)
+            log.debug(`Requesting element by XPath: ${xpath}`);
         await this.driver.wait(until.elementLocated(By.xpath(xpath)), timeout || consts.BROWSER_LOCATE_TIMEOUT, `Looking for element by xpath: ${xpath}`);
         return await this.driver.findElement(By.xpath(xpath));
     };
@@ -88,6 +90,13 @@ class ChromeBrowser {
         log.info("Adding logging subscriber");
         this.loghandlers.push(loghandler);
         log.debug(`\t${this.loghandlers.length} in total`);
+    }
+
+    async takeScreenshot(path) {
+        const data = await this.driver.takeScreenshot();
+        const buff = Buffer.from(data, 'base64');
+        fs.writeFileSync(path, buff);
+        log.info(`Saved screenshot: ${path}`);
     }
 
 }

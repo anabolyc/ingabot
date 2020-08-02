@@ -13,7 +13,7 @@
             ],
             "program": "${workspaceFolder}/index.js",
             "env": {
-                "APP_CHROME_HEADLESS": "true"
+                // "APP_CHROME_HEADLESS": "true"
             }
         }
     ]
